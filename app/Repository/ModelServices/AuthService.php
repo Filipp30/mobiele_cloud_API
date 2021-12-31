@@ -25,6 +25,19 @@ class AuthService implements AuthContract
 
     public function emailVerification($userId)
     {
-        User::findOrFail($userId)->sendEmailVerificationNotification();
+        return User::findOrFail($userId)->sendEmailVerificationNotification();
+    }
+
+    public function login($email,$password)
+    {
+        $user = User::query()->where('email','=',$email)->first();
+        if (!$user){ return false;}
+        if (!Hash::check($password,$user->password)){return false;}
+
+        return $user;
+    }
+
+    public function logout(User $user): bool{
+        return $user->tokens()->delete();
     }
 }
