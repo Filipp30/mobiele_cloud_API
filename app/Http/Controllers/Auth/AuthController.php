@@ -51,6 +51,7 @@ class AuthController{
            return response(['message'=>'email or password does not matches'],403);
        }
         $token = $user->createToken('jwt')->plainTextToken;
+
        return response(['jwt'=>$token],200);
    }
 
